@@ -9,10 +9,10 @@ def logistic_derivative(margin):
 
 
 def exponential_loss(margin):
-    return np.exp(-margin)
+    return np.exp(np.clip(-margin, -50, 50))
 
 def exponential_derivative(margin):
-    return -np.exp(-margin)
+    return -np.exp(np.clip(-margin, -50, 50))
 
 
 def squared_hinge_loss(margin):

@@ -7,6 +7,17 @@ from utils.download import load_images
 from utils.feature_selection import select_features
 
 
+def prepare_features(X_train, X_test, y_train, features_count):
+    scaler = StandardScaler()
+    X_train = scaler.fit_transform(X_train)
+    X_test = scaler.transform(X_test) # нормализует по данным с тренировочной
+
+    selected = select_features(X_train, y_train, features_count)
+    X_train = X_train[:, selected]
+    X_test = X_test[:, selected]
+    return X_train, X_test
+
+
 def prepare_dataset(
     parquet_paths,
     output_dir,
@@ -25,13 +36,9 @@ def prepare_dataset(
         random_state,
     )
 
-    scaler = StandardScaler()
-    X_train = scaler.fit_transform(X_train)
-    X_test = scaler.transform(X_test)  # применяем параметры, вычисленные по тренировочной
-
-    selected = select_features(X_train, y_train, features_count)
-    X_train = X_train[:, selected]
-    X_test = X_test[:, selected]
+    X_train, X_test = prepare_features(
+        X_train, X_test, y_train, features_count
+    )
 
     save_split_dataset(output_dir, X_train, y_train, X_test, y_test)
 
