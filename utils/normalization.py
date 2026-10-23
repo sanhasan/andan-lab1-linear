@@ -15,7 +15,7 @@ def prepare_features(X_train, X_test, y_train, features_count):
     selected = select_features(X_train, y_train, features_count)
     X_train = X_train[:, selected]
     X_test = X_test[:, selected]
-    return X_train, X_test
+    return X_train, X_test, selected
 
 
 def prepare_dataset(
@@ -36,7 +36,7 @@ def prepare_dataset(
         random_state,
     )
 
-    X_train, X_test = prepare_features(
+    X_train, X_test, features_indexes = prepare_features(
         X_train, X_test, y_train, features_count
     )
 
@@ -47,6 +47,7 @@ def prepare_dataset(
         "train_shape": X_train.shape,
         "test_shape": X_test.shape,
         "classes": {-1: "фотография", 1: "аниме"},
+        "features_indexes": features_indexes,
     }
 
 
